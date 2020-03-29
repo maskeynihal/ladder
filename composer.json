@@ -1,0 +1,24 @@
+{
+    "name": "maskeynihal/heirarchy-model",
+    "description": "Produces Heirarchy Model Like: HQ -- Country Department --Regional Department like wise, which can be used to limit the functionality. Country Department can view only data of the Country and likewise.",
+    "authors": [
+        {
+            "name": "maskeynihal",
+            "email": "maskeynihal@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "^5.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "maskeynihal\\heirarchy-model": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4":{
+            
+        }
+    }
+}
