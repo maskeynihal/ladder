@@ -26,9 +26,11 @@ class HierarchyServices
     public static function tree(Hierarchy $hierarchy)
     {
         self::$tree[]= $hierarchy;
+
         if(!$hierarchy->description->is_root){
             self::tree($hierarchy->myParent());
         }
+
         return self::$tree;
     }
 }

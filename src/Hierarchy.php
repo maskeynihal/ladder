@@ -22,10 +22,21 @@ class Hierarchy extends Model
     }
 
     /**
-    *   @return Heirarchy returns parent of the given hierarchy model
+    *   @return Hierarchy returns parent of the given hierarchy model
     */
     public function myParent()
     {
-        return Hierarchy::where('hierarchy_id', $this->description->parent_id)->first();
+        return Hierarchy::with('description')->where('hierarchy_id', $this->description->parent_id)->first();
     }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    // public function resolveRouteBinding($value)
+    // {
+    //     return $this->where('hierarchy_id', $value)->firstOrFail();
+    // }
+
 }

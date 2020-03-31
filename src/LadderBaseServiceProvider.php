@@ -39,7 +39,7 @@ class LadderBaseServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/ladder.php' => config_path('ladder.php'),
             __DIR__. '/../resources/views' => resource_path('views/ladder'),
-            __DIR__ . '/../database/migrations' => database_path('migration')
+            __DIR__ . '/../database/migrations' => database_path('migration'),
             
         ], 'ladder-publish');
     }
@@ -54,9 +54,8 @@ class LadderBaseServiceProvider extends ServiceProvider
     private function routeConfiguration()
     {
         return [
-             'prefix' =>  Ladder::prefix(),
              'namespace' => 'maskeynihal\ladder\Http\Controller',
-             'as' => 'ladder.'
+             'middleware' => 'web',
         ];
     }
 

@@ -5,6 +5,10 @@ namespace maskeynihal\ladder\Http\Controller;
 use maskeynihal\ladder\Hierarchy;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use maskeynihal\ladder\Http\Requests\HierarchyRequest;
+use maskeynihal\ladder\Http\Requests\HierarchyUpdateRequest;
+use maskeynihal\ladder\Services\HierarchyServices;
+use maskeynihal\ladder\Services\HierarchyStoreServices;
 
 class HierarchyController extends Controller
 {
@@ -16,6 +20,7 @@ class HierarchyController extends Controller
     public function index()
     {
         $hierarchies = Hierarchy::with('description')->get();
+        
         return view('ladder::index', compact('hierarchies'));
     }
 
@@ -26,7 +31,8 @@ class HierarchyController extends Controller
      */
     public function create()
     {
-        $hierarchies = Hierarchy::all();
+        $hierarchies = Hierarchy::pluck('title', 'hierarchy_id')->prepend('No Parent', '');
+        
         return view('ladder::create', compact('hierarchies'));
     }
 
@@ -36,9 +42,11 @@ class HierarchyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HierarchyRequest $request)
     {
-        //
+        $store = HierarchyStoreServices::store($request);
+
+        return redirect()->route('ladder.index');
     }
 
     /**
@@ -47,9 +55,13 @@ class HierarchyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Hierarchy $ladder)
     {
-        //
+        $ladder->load('description');
+
+        $tree = array_reverse(HierarchyServices::tree($ladder));
+
+        return view('ladder::show', compact(['ladder', 'tree']));
     }
 
     /**
@@ -58,9 +70,11 @@ class HierarchyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Hierarchy $ladder)
     {
-        //
+        $hierarchies = Hierarchy::pluck('title', 'hierarchy_id')->prepend('No Parent', '');
+
+        return view('ladder::edit', compact(['ladder', 'hierarchies']));
     }
 
     /**
@@ -70,9 +84,11 @@ class HierarchyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(HierarchyUpdateRequest $request, Hierarchy $ladder)
     {
-        //
+        $store = HierarchyStoreServices::store($request, $ladder);
+
+        return redirect()->route('ladder.index');
     }
 
     /**

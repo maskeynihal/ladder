@@ -14,4 +14,10 @@ class HierarchyDescription extends Model
         'is_root',
         'parent_id'
     ];
+
+    public function getRootAttribute()
+    {
+        return $this->attributes['is_root'] ? 'Yes' : 'No';
+    }
+
 }
